@@ -200,10 +200,16 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
 
       if (error) {
         [self->_phoneNumberField becomeFirstResponder];
-
-        UIAlertController *alertController = [FUIPhoneAuth alertControllerForError:error
-                                                                     actionHandler:nil];
-        [self presentViewController:alertController animated:YES completion:nil];
+        
+        NSMutableDictionary *newDictionary = [error.userInfo mutableCopy];
+        newDictionary[@"attempted_phone_number"] = phoneNumberWithCountryCode;
+        NSError *updatedError = [NSError errorWithDomain:error.domain code:error.code userInfo: newDictionary];
+          
+        if(error.code != FIRAuthErrorCodeInvalidPhoneNumber) {
+            UIAlertController *alertController = [FUIPhoneAuth alertControllerForError:error
+                                                                         actionHandler:nil];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
         
         FUIPhoneAuth *delegate = [self.authUI providerWithID:FIRPhoneAuthProviderID];
         [delegate callbackWithCredential:nil error:error result:nil];
