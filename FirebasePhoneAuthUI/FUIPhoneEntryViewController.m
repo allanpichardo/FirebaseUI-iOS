@@ -212,7 +212,12 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
         }
         
         FUIPhoneAuth *delegate = [self.authUI providerWithID:FIRPhoneAuthProviderID];
-        [delegate callbackWithCredential:nil error:error result:nil];
+        [delegate callbackWithCredential:nil error:updatedError result:nil];
+          
+        if(error.code == FIRAuthErrorCodeInvalidPhoneNumber) {
+            [self dismissViewControllerAnimated:true completion:nil];
+        }
+          
         return;
       }
 
