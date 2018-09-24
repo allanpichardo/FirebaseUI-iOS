@@ -68,8 +68,7 @@ NSString* const kFUIDefaultCountryCode = @"US";
   if (self = [super init]) {
     // Country codes JSON containing country codes and phone number info.
     NSString *countryCodeFilePath =
-        [[FUIAuthUtils bundleNamed:FUIPhoneAuthBundleName] pathForResource:@"country-codes"
-                                                                    ofType:@"json"];
+        [[NSBundle mainBundle] pathForResource:@"country-codes" ofType:@"json"];
     NSAssert([[NSFileManager defaultManager] fileExistsAtPath:countryCodeFilePath],
              @"Could not find country code file");
 
